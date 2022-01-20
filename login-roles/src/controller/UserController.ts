@@ -1,26 +1,104 @@
-import {getRepository} from "typeorm";
-import {NextFunction, Request, Response} from "express";
-import {User} from "../entity/User";
+import { getRepository } from "typeorm";
+import { NextFunction, Request, Response } from "express";
+import { User } from "../entity/User";
+import { validate } from "class-validator";
 
 export class UserController {
+    //get all
+    static getAll = async (req: Request, res: Response) => {
+        const userRepository = getRepository(User);
+        const users = await userRepository.find();
+        if (users.length > 0) {
+            res.send(users);
+        } else {
+            res.status(404).json({ message: 'not result' });
+        }
 
-    private userRepository = getRepository(User);
+    };
 
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.find();
+    static getById = async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const usersRepository = getRepository(User);
+        try {
+            const user = await usersRepository.findOneOrFail(id);
+            res.send(user);
+        } catch (error) {
+            res.status(404).json({ message: 'not result' });
+
+        }
+
+    };
+
+    static newUser = async (req: Request, res: Response) => {
+        const { username, password, role } = req.body;
+        const user = new User();
+
+        user.username = username;
+        user.password = password;
+        user.role = role;
+
+        //validciones
+        const errors = await validate(user);
+
+        if (errors.length > 0) {
+            return res.status(400).json(errors);
+        }
+        //todo hash password
+
+        const userRepository = getRepository(User);
+        try {
+            await userRepository.save(user);
+        } catch (error) {
+            return res.status(409).json({ message: 'username already exist' })
+        }
+        //all ok
+        res.send('user created')
+
+    };
+
+    static editUser = async (req: Request, res: Response) => {
+        let user;
+        const { id } = req.params;
+        const { username, role } = req.body;
+        const userRepository = getRepository(User);
+        try {
+            user = await userRepository.findOneOrFail(id);
+
+            user.username = username;
+            user.role = role;
+        } catch (error) {
+            return res.status(404).json({ message: 'user not found' })
+
+        }
+
+        const errors = await validate(user);
+        if (errors.length > 0) {
+            return res.status(400).json(errors);
+        }
+        //try to save
+        try {
+            await userRepository.save(user)
+        } catch (error) {
+            return res.status(409).json({message: 'username already in use'})
+        }
+        res.status(204).json({message:'user update'})
     }
 
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.findOne(request.params.id);
-    }
+    static deleteUser = async (req:Request, res:Response)=>{
+        const {id}=req.params;
+        const userRepository = getRepository(User);
+        let user:User;
+        try {
+            user= await userRepository.findOneOrFail(id);
 
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.save(request.body);
-    }
+        } catch (error) {
+            return res.status(404).json({message:'user not found'});
 
-    async remove(request: Request, response: Response, next: NextFunction) {
-        let userToRemove = await this.userRepository.findOne(request.params.id);
-        await this.userRepository.remove(userToRemove);
-    }
+        }
+        userRepository.delete(id);
+        res.status(201).json({message:'user delete'})
+    };
 
 }
+export default UserController;
+

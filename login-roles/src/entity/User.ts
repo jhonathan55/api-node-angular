@@ -1,6 +1,7 @@
-import {Entity, PrimaryGeneratedColumn, Column, Unique,CreateDateColumn,UpdateDateColumn} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, Unique, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { MinLength, IsNotEmpty, IsEmail } from "class-validator";
-//todo is Email
+import * as bcrypt from 'bcryptjs';
+
 @Entity()
 @Unique(['username'])
 
@@ -11,24 +12,35 @@ export class User {
 
     @Column()
     @MinLength(6)
-    username:string;
+    @IsEmail()
+    @IsNotEmpty()
+    username: string;
 
     @Column()
     @MinLength(6)
-    password:string;
+    @IsNotEmpty()
+    password: string;
 
     @Column()
     @IsNotEmpty()
-    role:string;
+    role: string;
 
     @Column()
     @CreateDateColumn()
-    createdAt:Date;
+    createdAt: Date;
 
     @Column()
     @UpdateDateColumn()
-    updateAt:Date;
+    updateAt: Date;
 
-    //metodos
-
+    //metodos encripta el passwor 
+    hashPassword(): void {
+        const salt = bcrypt.genSaltSync(10);
+        this.password = bcrypt.hashSync(this.password, salt);
+    }
+    //
+    checkPassword(password: string): boolean {
+        return bcrypt.compareSync(password, this.password)
+    }
+    
 }

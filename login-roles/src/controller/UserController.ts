@@ -7,13 +7,18 @@ export class UserController {
     //get all
     static getAll = async (req: Request, res: Response) => {
         const userRepository = getRepository(User);
-        const users = await userRepository.find();
+        let users
+        try {
+             users = await userRepository.find(); 
+        } catch (error) {
+            res.status(404).json({ message: 'Somenthing goes wrong!' });
+        }
+    
         if (users.length > 0) {
             res.send(users);
         } else {
             res.status(404).json({ message: 'not result' });
         }
-
     };
 
     static getById = async (req: Request, res: Response) => {
@@ -37,8 +42,9 @@ export class UserController {
         user.password = password;
         user.role = role;
 
-        //validciones
-        const errors = await validate(user);
+        //validciones que el campo no este vacio
+        const validationOpt = { validationError: { target: false, value: false } };
+        const errors = await validate(user,validationOpt);
 
         if (errors.length > 0) {
             return res.status(400).json(errors);
@@ -47,6 +53,8 @@ export class UserController {
 
         const userRepository = getRepository(User);
         try {
+            //encripta el password
+            user.hashPassword();
             await userRepository.save(user);
         } catch (error) {
             return res.status(409).json({ message: 'username already exist' })
@@ -68,10 +76,11 @@ export class UserController {
             user.role = role;
         } catch (error) {
             return res.status(404).json({ message: 'user not found' })
-
         }
-
-        const errors = await validate(user);
+        //valida que el rol no debe estar vacio
+        const validationOpt = { validationError: { target: false, value: false } };
+        const errors = await validate(user, validationOpt);
+        
         if (errors.length > 0) {
             return res.status(400).json(errors);
         }
@@ -79,24 +88,24 @@ export class UserController {
         try {
             await userRepository.save(user)
         } catch (error) {
-            return res.status(409).json({message: 'username already in use'})
+            return res.status(409).json({ message: 'username already in use' })
         }
-        res.status(204).json({message:'user update'})
+        res.status(204).json({ message: 'user update' })
     }
 
-    static deleteUser = async (req:Request, res:Response)=>{
-        const {id}=req.params;
+    static deleteUser = async (req: Request, res: Response) => {
+        const { id } = req.params;
         const userRepository = getRepository(User);
-        let user:User;
+        let user: User;
         try {
-            user= await userRepository.findOneOrFail(id);
+            user = await userRepository.findOneOrFail(id);
 
         } catch (error) {
-            return res.status(404).json({message:'user not found'});
+            return res.status(404).json({ message: 'user not found' });
 
         }
         userRepository.delete(id);
-        res.status(201).json({message:'user delete'})
+        res.status(201).json({ message: 'user delete' })
     };
 
 }

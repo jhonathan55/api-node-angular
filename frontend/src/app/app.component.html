@@ -2,14 +2,11 @@
     <mat-sidenav #sidenav mode="side">
         <mat-toolbar primary="color">
             Menu
-
         </mat-toolbar>
     </mat-sidenav>
     <mat-sidenav-content>
         <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
         <router-outlet></router-outlet>
-
     </mat-sidenav-content>
-
 </mat-sidenav-container>
 <app-footer></app-footer>

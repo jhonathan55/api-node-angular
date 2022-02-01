@@ -1,3 +1,4 @@
 export default{
-    jwtSecret:'Jh0n@th@n'
+    jwtSecret:'Jh0n@th@n',
+    jwtSecretReset:'Sc@rl3tt'
 }

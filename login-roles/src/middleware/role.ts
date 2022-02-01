@@ -1,4 +1,4 @@
-import { async } from "@firebase/util";
+
 import { Request, Response, NextFunction } from "express";
 import { getRepository } from "typeorm";
 import { User } from "../entity/User";

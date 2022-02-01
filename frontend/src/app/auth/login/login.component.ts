@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit,OnDestroy {
-
+  hide=true;
   private subscription: Subscription = new Subscription;
   
   constructor(
@@ -39,7 +39,9 @@ export class LoginComponent implements OnInit,OnDestroy {
   }
 
   onLogin(): void {
-
+    if(this.loginForm.invalid){
+      return ;
+    }
     const formValue = this.loginForm.value;
     console.log(formValue);
     this.subscription?.add(

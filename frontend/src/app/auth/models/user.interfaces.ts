@@ -1,11 +1,11 @@
-export type Roles = 'SUSCRIPTOR' | 'ADMIN';
+export type Roles = 'SUSCRIPTOR' | 'ADMIN' | null;
 
 export interface UserI{
     username:string,
     password:string,
 }
 
-export interface UserResponseI{
+export interface UserResponseI extends UserI{
     message:string,
     token:string,
     id:number,

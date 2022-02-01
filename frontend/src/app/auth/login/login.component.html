@@ -6,6 +6,7 @@
         <mat-form-field class="full-width-input separator">
           <mat-label>Enter your email</mat-label>
           <input matInput placeholder="pat@example.com" formControlName="username" type="text" required [class]="isValidField('username')">
+          
           <mat-error *ngIf="loginForm.get('username')?.errors">
             Nombre es requerido
           </mat-error>
@@ -13,12 +14,17 @@
         
         <mat-form-field class="full-width-input separator">
           <mat-label>Enter your Password</mat-label>
-          <input matInput placeholder="" formControlName="password" type="password" required>
+          <input matInput placeholder="" formControlName="password" 
+          [type]="hide ? 'password': 'text'" required>
+          <button mat-icon-button matSuffix (click)="hide= !hide">
+            <mat-icon>{{hide ? "visibility_of":"visibility" }}</mat-icon>
+          </button>
           <mat-error *ngIf="loginForm.get('password')?.errors">
             Password es requerido
           </mat-error>
         </mat-form-field>
-        <button mat-raised-button type="submit" color="primary">Login</button>
+        <button [disabled]="loginForm.invalid" 
+        mat-raised-button type="submit" color="primary">Login</button>
       </form>
     </mat-card-content>
   </mat-card>

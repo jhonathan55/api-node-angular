@@ -3,7 +3,7 @@
     <mat-card-title>Login</mat-card-title>
     <mat-card-content>
       <form action="" [formGroup]="loginForm" (ngSubmit)="onLogin()">
-        <mat-form-field class="full-width-input separator">
+        <mat-form-field class="full-width-input separator" color="accent">
           <mat-label>Enter your email</mat-label>
           <input matInput placeholder="pat@example.com" formControlName="username" type="text" required [class]="isValidField('username')">
           
@@ -12,7 +12,7 @@
           </mat-error>
         </mat-form-field>
         
-        <mat-form-field class="full-width-input separator">
+        <mat-form-field class="full-width-input separator" color="accent">
           <mat-label>Enter your Password</mat-label>
           <input matInput placeholder="" formControlName="password" 
           [type]="hide ? 'password': 'text'" required>

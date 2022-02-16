@@ -4,14 +4,14 @@ import {User} from '../entity/User';
 import * as jwt from 'jsonwebtoken';
 import config from "../config/config";
 import { validate } from "class-validator";
-
+import { transporter } from "../config/mailer";
 class AuthController {
     
     static login = async (req:Request, res: Response)=>{
         const {username, password}=req.body;
         
         if(!(username && password)){
-            return res.status(400).json({message:'Username & Password re required'}); 
+            return res.status(400).json({message:'Username & Password are required'}); 
         }
         const userRopository = getRepository(User);
         let user:User;
@@ -22,16 +22,16 @@ class AuthController {
                 }
             });
         } catch (error) {
-           return res.status(400).json({message:'username incorect'});
+           return res.status(452).json({message:'username incorect'});
         }
         //check password
         if(!user.checkPassword(password)){
-            return res.status(400).json({message: "password incorrect"})
+            return res.status(452).json({message: "password incorrect"})
         }
 
         const token= jwt.sign({userId: user.id,username:user.username},config.jwtSecret,{expiresIn:'1h'})
         //enviamos al front el mensaje, token y rol desde la res user
-        res.json({message:'ok',token,role:user.role})
+        res.json({message:'ok',token,role:user.role, id:user.id})
     }
     static changePassword = async (req:Request, res:Response) =>{
         const {userId}= res.locals.jwtPayload;
@@ -96,7 +96,18 @@ class AuthController {
         }
         //todo send email
         try {
-            
+            await transporter.sendMail({
+                from: '"Fred Foo 👻" <foo@example.com>', // sender address
+                to: user.username, // list of receivers
+                subject: "Change password ✔", // Subject line
+                text: "Change password", // plain text body
+                html: `
+                    <p>Change password</p>
+                    <a href="${verificacionLink}">${verificacionLink}</a>                
+                `, // html body
+              });
+
+
         } catch (error) {
           emailStatus= error;
           return res.status(400).json({messaege:'no se puedo enviar email'})  

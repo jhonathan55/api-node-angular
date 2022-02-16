@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import * as express from "express";
-import { Request, Response } from "express";
 import * as cors from 'cors';
 import routes from "./routes";
 import helmet from "helmet";
@@ -21,6 +20,6 @@ createConnection().then(async () => {
     app.use('/', routes);
 
     // start express server
-    app.listen(PORT, () => console.log('server ok'));
+    app.listen(PORT, () => console.log(`server ok ${PORT}`));
 
 }).catch(error => console.log(error));

@@ -2,13 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthInterceptorProvider } from '../interceptor/cookies.interceptor';
 import { UserI } from '../models/user.interfaces';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  
+  
 })
 export class LoginComponent implements OnInit,OnDestroy {
   hide=true;
@@ -43,10 +46,11 @@ export class LoginComponent implements OnInit,OnDestroy {
       return ;
     }
     const formValue = this.loginForm.value;
-    console.log(formValue);
+   
     this.subscription?.add(
         this.authSvc.login(formValue).subscribe(res => {
           if (res) {
+            console.log(res);
             this.router.navigate(['./home']);
           }
         })

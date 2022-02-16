@@ -1,0 +1,40 @@
+<div class="user-new-form">
+    <mat-card >
+        <mat-card-title >New User</mat-card-title>
+        <form [formGroup]="newUserForm" (ngSubmit)="onNewUser()">
+          <mat-form-field class="full-width-input separator" color="accent">
+            <mat-label>Enter your email</mat-label>
+            <input matInput placeholder="pat@example.com" formControlName="username" type="text" required [class]="isValidField('username')">
+            <mat-error *ngIf="newUserForm.get('username')?.errors">
+              email es requerido
+            </mat-error>
+          </mat-form-field>
+            <mat-form-field class="full-width-input separator" color="accent">
+              <mat-label>Enter your Password</mat-label>
+              <input matInput placeholder="" formControlName="password" 
+              [type]="hide ? 'password': 'text'" required>
+              <button mat-icon-button matSuffix (click)="hide= !hide">
+                <mat-icon>{{hide ? "visibility_of":"visibility" }}</mat-icon>
+              </button>
+              <mat-error *ngIf="newUserForm.get('password')?.errors">
+                Password es requerido
+              </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input separator" color="accent">
+            <mat-label>Select Role</mat-label>
+            <mat-select formControlName="role">
+              <mat-option value="Admin">Admin</mat-option>
+              <mat-option value="Reader">Reader</mat-option>
+            </mat-select>
+          
+          </mat-form-field>
+          <button [disabled]="newUserForm.invalid" 
+        mat-raised-button type="submit" color="accent">Crear</button>
+      </form>
+    </mat-card>
+    
+  </div>
+
+
+

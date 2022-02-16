@@ -47,7 +47,7 @@ export class UserController {
         const errors = await validate(user,validationOpt);
 
         if (errors.length > 0) {
-            return res.status(400).json(errors);
+            return res.status(400).json({message:'error en la validación de los datos'});
         }
         //todo hash password
 
@@ -60,8 +60,8 @@ export class UserController {
             return res.status(409).json({ message: 'username already exist' })
         }
         //all ok
-        res.send('user created')
-
+        res.status(200).send('user created')
+        
     };
 
     static editUser = async (req: Request, res: Response) => {

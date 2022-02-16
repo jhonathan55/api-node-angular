@@ -1,0 +1,49 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+  .dialogConfig.position  {
+    top: "0";
+    left: "50"
+}
+
+.container {
+  .table {
+      position: center;
+      padding: 1rem 1rem auto;
+      // margin-left: 1rem;
+      //    width: 100%;
+      max-width: 70%;
+      min-width: 30%;
+  }
+
+  .demo-button-container {
+      padding-bottom: 16px;
+      padding: 1rem auto;
+      margin-left: 1rem;
+  }
+
+  .demo-button + .demo-button {
+      margin-left: 8px;
+  }
+  .example-button-row {
+      display: table-cell;
+      width: 490px;
+  }
+
+  .example-button-row .mat-button-base {
+      margin: 8px 8px 8px 0;
+  }
+
+  .example-flex-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+  }
+  //agrupa los btn
+  .button-container {
+      display: flex;
+      .mat-icom {
+          size: 18dp;
+      }
+  }
+}

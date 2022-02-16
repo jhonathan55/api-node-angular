@@ -9,7 +9,7 @@ const router = Router();
 //checkRole valida que el rol admin pueda ejecutr cualquiera de endPoint
 router.get('/', [checkJwt], UserController.getAll);
 //get one user
-router.get('/:id', [checkJwt, checkRole(['admin'])], UserController.getById);
+router.get('/:id', [checkJwt], UserController.getById);
 //create a new user
 router.post('/',[checkJwt] ,UserController.newUser);
 //edit user

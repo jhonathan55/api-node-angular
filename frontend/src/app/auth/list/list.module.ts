@@ -5,15 +5,18 @@ import { ListRoutingModule } from './list-routing.module';
 import { ListComponent } from './list.component';
 
 import { MaterialModule } from 'src/app/modules/material/material.module';
+import { FormComponent } from './form/form.component';
 
 @NgModule({
   declarations: [
-    ListComponent
+    ListComponent,
+    FormComponent
   ],
   imports: [
     CommonModule,
     ListRoutingModule,
     MaterialModule
-  ]
+  ],
+  entryComponents:[FormComponent],
 })
 export class ListModule { }

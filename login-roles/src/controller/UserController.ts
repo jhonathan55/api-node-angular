@@ -71,7 +71,6 @@ export class UserController {
         const userRepository = getRepository(User);
         try {
             user = await userRepository.findOneOrFail(id);
-
             user.username = username;
             user.role = role;
         } catch (error) {

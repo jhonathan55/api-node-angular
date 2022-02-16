@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>{{description}}</h2>
+
+<mat-dialog-content class="dialogConfig.position">
+   <div class="container">
+    <form [formGroup]="form" >
+      <mat-form-field class="full-width-input separator" color="accent">
+        <mat-label>Enter your email</mat-label>
+        <input matInput placeholder="pat@example.com" formControlName="username" type="text" required [class]="isValidField('username')">
+        <mat-error *ngIf="form.get('username')?.errors">
+          email es requerido
+        </mat-error>
+      </mat-form-field>
+        <mat-form-field class="full-width-input separator" color="accent">
+          <mat-label>Enter your Password</mat-label>
+          <input matInput placeholder="" formControlName="password" 
+          [type]="hide ? 'password': 'text'" required>
+          <button mat-icon-button matSuffix (click)="hide= !hide">
+            <mat-icon>{{hide ? "visibility_of":"visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password')?.errors">
+            Password es requerido
+          </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width-input separator" color="accent">
+        <mat-label>Select Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="Admin">Admin</mat-option>
+          <mat-option value="Reader">Reader</mat-option>
+        </mat-select>
+      
+      </mat-form-field>
+  </form>
+   </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button  class="mat-raised-button" (click)="close()">Close</button>
+    <span class="example-spacer"></span>
+    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="form.value"  [disabled]="form.invalid">Save</button>
+</mat-dialog-actions>

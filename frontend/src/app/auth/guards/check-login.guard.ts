@@ -8,7 +8,6 @@ import { AuthService } from '../services/auth.service';
 })
 export class CheckLoginGuard implements CanActivate {
   constructor(private authSvc: AuthService){
-
   }
   canActivate(): Observable<boolean>{
     return this.authSvc.isLogged.pipe(
@@ -16,8 +15,7 @@ export class CheckLoginGuard implements CanActivate {
       map(
         (isLogged:boolean)=>!isLogged
       )
-
     );
   }
-  
 }
+

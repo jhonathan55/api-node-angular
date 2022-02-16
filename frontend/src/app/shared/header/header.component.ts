@@ -28,8 +28,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe((res) => (this.isLogged = res))
-
-
       this.authSvc.isAdmin$.pipe(
         takeUntil(this.destroy$)
       )

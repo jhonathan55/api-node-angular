@@ -12,6 +12,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { AuthInterceptorProvider } from 'src/app/auth/interceptor/cookies.interceptor';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import {MatTableModule} from '@angular/material/table';
+import {MatDialogModule} from '@angular/material/dialog';
+
 const myModules = [
   MatToolbarModule,
   MatIconModule,
@@ -22,7 +24,8 @@ const myModules = [
   ReactiveFormsModule,
   MatInputModule,
   MatSelectModule,
-  MatTableModule
+  MatTableModule,
+  MatDialogModule
 ];
 @NgModule({
   declarations: [
@@ -35,6 +38,7 @@ const myModules = [
   exports: [
     myModules
   ],
-  providers:[]
+  providers:[],
+ 
 })
 export class MaterialModule { }

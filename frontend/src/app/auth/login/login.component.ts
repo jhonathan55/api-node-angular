@@ -58,6 +58,8 @@ export class LoginComponent implements OnInit,OnDestroy {
   }
 
 
+
+  //valida los input
   isValidField(field: string): string {
     const validatedField = this.loginForm.get(field);
     return (!validatedField?.valid && validatedField?.touched) ? 'is-invalid' : validatedField?.touched ? 'is-valid' : '';

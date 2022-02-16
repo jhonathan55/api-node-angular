@@ -7,7 +7,7 @@
     </button>
     <span class="example-spacer"></span>
     <a mat-button [routerLink]="'./admin'">Admin </a>
-    <a mat-button *ngIf="isLogged" [routerLink]="'./new'" >New</a>
+    
     <a mat-button *ngIf="isLogged" [routerLink]="'./list'" >list</a>
     <a *ngIf="!isLogged;else viewLogout" mat-button [routerLink]="'./login'">Login</a>
   </ng-container>

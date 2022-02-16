@@ -1,13 +1,12 @@
 <div class="container">
-
+    
     <div class="demo-button-container mt-2">
-        <button mat-raised-button class="demo-button" color="primary" [routerLink]="['/new']">
+        <button mat-raised-button class="demo-button" color="primary" (click)="openDialog()">
             New User
         </button>
     </div>
 
     <table mat-table [dataSource]="dataSource" class="table mat-elevation-z8">
-
         <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
@@ -40,7 +39,6 @@
                 <button mat-mini-fab color="warn" (click)="onDelete(element.id)">
                     <mat-icon>delete</mat-icon>
                 </button>
-
 
             </td>
         </ng-container>

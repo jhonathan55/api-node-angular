@@ -21,10 +21,10 @@ const helper = new JwtHelperService();
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   private role = new BehaviorSubject<Roles>(null);
- 
-  users:Observable<UserI>| undefined;
 
-  get token(){
+  users: Observable<UserI> | undefined;
+
+  get token() {
     return localStorage.getItem('auth')
   }
   //cont token que se guarda en la app con el nombre profanis_auth
@@ -37,7 +37,7 @@ export class AuthService {
     private router: Router
   ) {
     this.checkToke();
-    
+
   }
 
   get isLogged(): Observable<boolean> {
@@ -60,29 +60,35 @@ export class AuthService {
 
   }
 
-  getUsers():Observable<UserI>{
-      this.users=this.http.get<UserI>(`${environment.api_url}/user`)
-    return this.users
-  }
   newUser(authData: UserI): Observable<UserResponseI | void> {
-      
+
     return this.http.post<UserResponseI>(`${environment.api_url}/user`, authData).pipe(
-      map((res)=>{
-       return res
+      map((res) => {
+        return res
       }),
-      catchError((err)=>this.handlerError(err)
-      
+      catchError((err) => this.handlerError(err)
+
       )
     )
   }
-  delete(id:string): Observable<UserResponseI | void>{
-   return this.http.delete<UserResponseI>(`${environment.api_url}/user/${id}`).pipe(
-     map((user)=>{
-       console.log(user);
-     })
-   )
+  delete(id: string): Observable<UserResponseI | void> {
+    return this.http.delete<UserResponseI>(`${environment.api_url}/user/${id}`).pipe(
+      map((user) => {
+        console.log(user);
+      })
+    )
   }
 
+  getUsers(): Observable<UserI> {
+    this.users = this.http.get<UserI>(`${environment.api_url}/user`)
+    return this.users
+  }
+
+  getById(id: string): Observable<UserI | void> {
+    return this.http.get<UserI>(`${environment.api_url}/user/${id}`)
+  }
+
+  //elimina los valores almacenados en el local store y setea la variable loggedIn en false
   logout(): void {
     localStorage.removeItem('user');
     localStorage.removeItem('auth');
@@ -90,7 +96,6 @@ export class AuthService {
     this.loggedIn.next(false);
     this.router.navigate(['./login'])
   }
-
   private checkToke(): void {
     const user = localStorage.getItem('user') || null;
     if (user) {
@@ -103,11 +108,11 @@ export class AuthService {
     }
     //set userIsLogged= isExpired
   }
-  //guarda la respuesta del back en la app web en formato json
+  //guarda la respuesta del back en la app web en formato json cuando nos ejecutamos login()
   private saveLocalStorage(user: UserResponseI): void {
 
     const { message, ...rest } = user;
-    
+
     //almacena los datos del usuario en la app
     localStorage.setItem('user', JSON.stringify(rest));
     //almacena el token en la const TOKEN_NAME y quitamos las comillas para que no cree conflicto en el back al momento de validad el token
@@ -115,36 +120,44 @@ export class AuthService {
     // console.log(this.token$);
     console.log(this.token);
   }
+  //captura los errores desde el servidor
   private handlerError(err: any): Observable<never> {
     //let errorMessage = 'An error ocurred retrienving data';
 
-    if (err.status==400) {
+    if (err.status == 400) {
       Swal.fire(
         'Error!',
         'Complete todos los campos!',
         'error'
       )
-     
-    }if(err.status==409){
+
+    } if (err.status == 409) {
       Swal.fire(
         'Error!',
         'Usuario ya existe!',
         'error'
       )
-    }if(err.status==200){
+    } if (err.status == 200) {
       Swal.fire(
         'succefull!',
         'success'
-      )
+      ).then((result) => {
+        if (result) {
+          location.reload();
+        }
+      }, (err) => {
+        Swal.fire('Error', 'No se puedo Eliminar contacto!!', 'error');
+      })
+
       return throwError(err)
-    }if(err.status==404){
+    } if (err.status == 404) {
       Swal.fire(
         'Error!',
         'no encontrado',
         'error'
       )
     }
-    if(err.status==452){
+    if (err.status == 452) {
       Swal.fire(
         'Error!',
         'Datos incorreectos',
@@ -153,7 +166,7 @@ export class AuthService {
     }
 
 
-    
+
     //window.alert(errorMessage);
     return throwError(err)
   }

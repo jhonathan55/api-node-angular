@@ -11,8 +11,6 @@ import {
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
-
-
 @Injectable()
 export class CookiesInterceptor implements HttpInterceptor {
 
@@ -28,16 +26,10 @@ export class CookiesInterceptor implements HttpInterceptor {
     if (token) {
       req = req.clone({
         headers: req.headers.set('auth', token)
-
       })
     }
-
-
-
     return next.handle(req);
-
   }
-
 }
 
 export const AuthInterceptorProvider = {

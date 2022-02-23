@@ -35,7 +35,6 @@ export class User {
 
     @Column()
     @IsOptional()
-    @IsNotEmpty()
     resetToken:string;
 
     //metodos encripta el passwor 
@@ -43,7 +42,7 @@ export class User {
         const salt = bcrypt.genSaltSync(10);
         this.password = bcrypt.hashSync(this.password, salt);
     }
-    //
+    //valida el pass
     checkPassword(password: string): boolean {
         return bcrypt.compareSync(password, this.password)
     }

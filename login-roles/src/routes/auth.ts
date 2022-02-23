@@ -5,7 +5,6 @@ import { checkJwt } from "../middleware/jwt";
 const router = Router();
 
 router.post('/login', AuthController.login);
-
 //cambio de contraseña usuarios envio de link
 router.put('/forgot-password', AuthController.forgotPassword);
 //cambio de contraseña 

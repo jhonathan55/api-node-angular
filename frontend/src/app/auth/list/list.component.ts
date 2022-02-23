@@ -39,7 +39,6 @@ export class ListComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
-
   //from ok 
   openDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -56,7 +55,6 @@ export class ListComponent implements OnInit, OnDestroy, OnChanges {
       }
     })
   }
-
   //get all users ok
   getUsers(): void {
     this.authSvc.getUsers().subscribe((res: any) => {
@@ -64,8 +62,6 @@ export class ListComponent implements OnInit, OnDestroy, OnChanges {
       console.log(this.users$);
     })
   }
- 
-
   //in process falta implementar el edit & que el campo paswor no aparesca
   onEdit(id: string) {
    this.authSvc.getById(id).subscribe((res:any)=>{
@@ -74,7 +70,7 @@ export class ListComponent implements OnInit, OnDestroy, OnChanges {
      const dialogConfig = new MatDialogConfig();
      dialogConfig.disableClose = true;
      dialogConfig.autoFocus = true;
-     dialogConfig.data = { username: res.username, password: '123456', role: 'Reader' };
+     dialogConfig.data = { username: res.username, password: '123456', role:res.role};
      const dialogRef = this.matDialog.open(FormComponent, dialogConfig);
      //respuesta del formulario
      dialogRef.afterClosed().subscribe(res => {
@@ -107,19 +103,15 @@ export class ListComponent implements OnInit, OnDestroy, OnChanges {
             confirmButtonText: 'ok',
           }).then((result) => {
             if (result) {
-              
               location.reload();
             }
           }, (err) => {
-
             Swal.fire('Error', 'No se puedo Eliminar contacto!!', 'error');
-
           })
         }
       });
    
   }
-
   //ok
   onNewUser(user: UserI) {
     this.subscription?.add(
@@ -128,7 +120,5 @@ export class ListComponent implements OnInit, OnDestroy, OnChanges {
       })
     )
   }
-
-
 
 }

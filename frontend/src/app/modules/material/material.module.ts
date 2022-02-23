@@ -13,7 +13,7 @@ import { AuthInterceptorProvider } from 'src/app/auth/interceptor/cookies.interc
 import { AuthService } from 'src/app/auth/services/auth.service';
 import {MatTableModule} from '@angular/material/table';
 import {MatDialogModule} from '@angular/material/dialog';
-
+import {MatPaginatorModule} from '@angular/material/paginator';
 const myModules = [
   MatToolbarModule,
   MatIconModule,
@@ -25,7 +25,8 @@ const myModules = [
   MatInputModule,
   MatSelectModule,
   MatTableModule,
-  MatDialogModule
+  MatDialogModule,
+  MatPaginatorModule
 ];
 @NgModule({
   declarations: [

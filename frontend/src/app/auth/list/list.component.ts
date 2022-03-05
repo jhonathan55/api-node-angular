@@ -1,45 +1,52 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MatDialogConfig, MatDialog  } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { UserI, UserResponseI } from '../models/user.interfaces';
+import { UserI } from '../models/user.interfaces';
 import { AuthService } from '../services/auth.service';
 import { FormComponent } from './form/form.component';
 import { catchError, map } from 'rxjs/operators';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit, OnDestroy, OnChanges {
+export class ListComponent implements OnInit, OnDestroy, OnChanges,AfterViewInit  {
   //data table
-  dataSource = [];
+  dataSource:any;
   //stores user
   users$: any = [];
   user: Observable<UserI> | undefined;
 
-
   private subscription: Subscription = new Subscription;
   //columns table
   displayedColumns: string[] = ['id', 'username', 'role', 'actions'];
+  //decorador que nos permite utilizar el paginator de material
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  
   constructor(
     private authSvc: AuthService,
-    private matDialog: MatDialog,
-    // public dialogRef: MatDialogRef<FormComponent>,
+    private matDialog: MatDialog, 
   ) { }
-
   ngOnInit(): void {
     this.getUsers();
+ 
   }
+  //implementacion de la interfas AfterViewInit para la paginación
+  ngAfterViewInit() {
+    this.dataSource.paginator! = this.paginator;
+  }
+ 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('cambio', changes);
-
   }
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
-  //from ok 
+  //form ok edit 
   openDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -56,10 +63,10 @@ export class ListComponent implements OnInit, OnDestroy, OnChanges {
     })
   }
   //get all users ok
+  //pasamos la respuesta del servidor al dataSource bajo una instancia MattableDataSource y la tipamos
   getUsers(): void {
     this.authSvc.getUsers().subscribe((res: any) => {
-      this.dataSource = res
-      console.log(this.users$);
+      this.dataSource = new MatTableDataSource<UserI>(res)
     })
   }
   //in process falta implementar el edit & que el campo paswor no aparesca

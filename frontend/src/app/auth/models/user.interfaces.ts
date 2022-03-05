@@ -17,5 +17,5 @@ export interface UserResponseI extends UserI {
     token?: string,
     id?: number,
     status?:number
-  
+
 }

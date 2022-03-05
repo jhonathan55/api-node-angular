@@ -1,11 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, Unique, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from "typeorm";
 import { MinLength, IsNotEmpty, IsOptional } from "class-validator";
-import { Product } from "./Product";
+import { Category } from "./Category";
 
 @Entity()
-@Unique(['id'])
+@Unique(['name'])
 
-export class Category {
+export class Product {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -21,6 +21,11 @@ export class Category {
     description: string;
 
     @Column()
+    @MinLength(3)
+    @IsNotEmpty()
+    price: number;
+
+    @Column()
     @CreateDateColumn()
     createdAt: Date;
 
@@ -28,8 +33,10 @@ export class Category {
     @UpdateDateColumn()
     updateAt: Date;
 
-    //Create relations category by product
-    @ManyToMany(() => Product,(product)=>product.id)
-    product: Product[];
+    //Create relations product by category
+    @ManyToMany(() => Category,(category)=>category.id)
+    @IsNotEmpty()
+    @JoinTable()
+    categories: Category[];
   
 }

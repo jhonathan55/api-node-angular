@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ListRoutingModule } from './list-routing.module';
 import { ListComponent } from './list.component';
 
+import { MaterialModule } from 'src/app/modules/material/material.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { ListComponent } from './list.component';
   ],
   imports: [
     CommonModule,
-    ListRoutingModule
+    ListRoutingModule,
+    MaterialModule
   ]
 })
 export class ListModule { }

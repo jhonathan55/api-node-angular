@@ -11,11 +11,13 @@ import { HttpClientModule  } from '@angular/common/http';
 import { AuthInterceptorProvider } from './auth/interceptor/cookies.interceptor';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
+   
     
   ],
   imports: [

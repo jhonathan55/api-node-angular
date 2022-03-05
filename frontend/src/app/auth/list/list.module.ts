@@ -10,7 +10,8 @@ import { FormComponent } from './form/form.component';
 @NgModule({
   declarations: [
     ListComponent,
-    FormComponent
+    FormComponent,
+    
   ],
   imports: [
     CommonModule,

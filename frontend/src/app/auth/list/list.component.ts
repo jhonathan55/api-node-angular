@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import { UserI } from '../models/user.interfaces';
 import { AuthService } from '../services/auth.service';
 import { FormComponent } from './form/form.component';
-import { catchError, map } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 

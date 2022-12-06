@@ -12,6 +12,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatListModule} from '@angular/material/list';
+
 const myModules = [
   MatToolbarModule,
   MatIconModule,
@@ -24,7 +26,8 @@ const myModules = [
   MatSelectModule,
   MatTableModule,
   MatDialogModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatListModule,
 ];
 @NgModule({
   declarations: [

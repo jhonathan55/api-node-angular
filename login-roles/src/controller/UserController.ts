@@ -47,20 +47,19 @@ export class UserController {
         const errors = await validate(user,validationOpt);
 
         if (errors.length > 0) {
-            return res.status(400).json({message:'error en la validación de los datos'});
+            return res.status(400).json({message:'error en la validación de los datos',
+        errors});
         }
-        //todo hash password
-
         const userRepository = getRepository(User);
         try {
             //encripta el password
             user.hashPassword();
             await userRepository.save(user);
         } catch (error) {
-            return res.status(409).json({ message: 'username already exist' })
+            return res.status(409).json({ message: 'username already exist', error })
         }
         //all ok
-        res.status(200).send('user created')
+        res.status(200).send({user});
         
     };
 

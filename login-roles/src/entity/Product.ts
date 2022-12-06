@@ -21,7 +21,6 @@ export class Product {
     description: string;
 
     @Column()
-    @MinLength(3)
     @IsNotEmpty()
     price: number;
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Inject,OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef } from "@angular/material/dialog";
 import {
@@ -6,7 +6,7 @@ import {
 } from "@angular/material/dialog";
 import { Subscription } from 'rxjs';
 import { UserI } from '../../models/user.interfaces';
-import { AuthService } from '../../services/auth.service';
+
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -30,13 +30,11 @@ export class FormComponent implements OnInit,OnChanges {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<FormComponent>,
-    private authSvc: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
    
   }
 
-  
   ngOnChanges(changes: SimpleChanges): void {
     console.log('cam',changes);
   }

@@ -1,0 +1,47 @@
+<ng-container>
+    <mat-dialog-content>
+        <form [formGroup]="form">
+            <mat-form-field class="full-width-input separator" color="accent">
+                <mat-label>Product name</mat-label>
+                <input matInput placeholder="Calzas" formControlName="name" type="text" required
+                    [class]="isValidField('name')">
+                <mat-error *ngIf="form.get('name')?.errors">
+                    product name is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width-input separator" color="accent">
+                <mat-label>Description</mat-label>
+                <input matInput placeholder="Texturizadas mujer" formControlName="description" type="text" required
+                    [class]="isValidField('description')">
+                <mat-error *ngIf="form.get('description')?.errors">
+                    description is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width-input separator" color="accent">
+                <mat-label>Price</mat-label>
+                <input matInput placeholder="3000" formControlName="price" type="text" required 
+                    [class]="isValidField('price')">
+                <mat-error *ngIf="form.get('price')?.errors">
+                    price is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-selection-list #categories name="categories" id="categories" formControlName="categories">
+                <mat-label>Categories</mat-label>
+                <mat-list-option [value]="items.id" *ngFor="let items of category ">
+                    {{items?.name}}
+                </mat-list-option>
+            </mat-selection-list>
+            <mat-error *ngIf="form.get('categories')?.errors">
+                categories is required
+            </mat-error>
+        </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button class="mat-raised-button" (click)="close()">Close</button>
+        <span class="example-spacer"></span>
+        <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="form.value"
+            [disabled]="form.invalid">Save</button>
+    </mat-dialog-actions>
+</ng-container>

@@ -6,7 +6,6 @@
         <mat-form-field class="full-width-input separator" color="accent">
           <mat-label>Enter your email</mat-label>
           <input matInput placeholder="pat@example.com" formControlName="username" type="text" required [class]="isValidField('username')">
-          
           <mat-error *ngIf="loginForm.get('username')?.errors">
             Nombre es requerido
           </mat-error>

@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
@@ -24,13 +24,6 @@ export class AuthService {
 
   users: Observable<UserI> | undefined;
 
-  get token() {
-    return localStorage.getItem('auth')
-  }
-  //cont token que se guarda en la app con el nombre profanis_auth
-  private readonly TOKEN_NAME = 'auth';
-
-
   constructor(
     //el Http tambien se debe importar en el modulo raiz
     private http: HttpClient,
@@ -39,7 +32,11 @@ export class AuthService {
     this.checkToke();
 
   }
-
+  //cont token que se guarda en la app con el nombre profanis_auth
+  private readonly TOKEN_NAME = 'auth';
+  get token() {
+    return localStorage.getItem('auth')
+  }
   get isLogged(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
@@ -57,7 +54,6 @@ export class AuthService {
       }),
       catchError((err) => this.handlerError(err))
     );
-
   }
 
   newUser(authData: UserI): Observable<UserResponseI | void> {
@@ -110,9 +106,7 @@ export class AuthService {
   }
   //guarda la respuesta del back en la app web en formato json cuando nos ejecutamos login()
   private saveLocalStorage(user: UserResponseI): void {
-
     const { message, ...rest } = user;
-
     //almacena los datos del usuario en la app
     localStorage.setItem('user', JSON.stringify(rest));
     //almacena el token en la const TOKEN_NAME y quitamos las comillas para que no cree conflicto en el back al momento de validad el token
@@ -123,14 +117,12 @@ export class AuthService {
   //captura los errores desde el servidor
   private handlerError(err: any): Observable<never> {
     //let errorMessage = 'An error ocurred retrienving data';
-
     if (err.status == 400) {
       Swal.fire(
         'Error!',
         'Complete todos los campos!',
         'error'
       )
-
     } if (err.status == 409) {
       Swal.fire(
         'Error!',
@@ -149,7 +141,7 @@ export class AuthService {
         Swal.fire('Error', 'No se puedo Eliminar contacto!!', 'error');
       })
 
-      return throwError(err)
+      return throwError(()=>err)
     } if (err.status == 404) {
       Swal.fire(
         'Error!',
@@ -164,8 +156,6 @@ export class AuthService {
         'error'
       )
     }
-
-
 
     //window.alert(errorMessage);
     return throwError(err)

@@ -9,16 +9,14 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { MaterialModule } from './modules/material/material.module';
 import { HttpClientModule  } from '@angular/common/http';
 import { AuthInterceptorProvider } from './auth/interceptor/cookies.interceptor';
-
-
+import { NumberOnlyDirective } from './shared/directives/number-only.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-   
-    
+    NumberOnlyDirective,
   ],
   imports: [
     BrowserModule,

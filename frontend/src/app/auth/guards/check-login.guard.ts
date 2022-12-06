@@ -10,6 +10,14 @@ export class CheckLoginGuard implements CanActivate {
   constructor(private authSvc: AuthService){
   }
   canActivate(): Observable<boolean>{
+    const isLogged= this.authSvc.isLogged.pipe(
+      take(1),
+      map(
+        (isLogged:boolean)=>!isLogged
+      )
+    );
+    console.log(isLogged);
+    
     return this.authSvc.isLogged.pipe(
       take(1),
       map(

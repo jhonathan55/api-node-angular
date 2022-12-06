@@ -4,7 +4,7 @@ import {User} from '../entity/User';
 import * as jwt from 'jsonwebtoken';
 import config from "../config/config";
 import { validate } from "class-validator";
-import { transporter } from "../config/mailer";
+ import { transporter } from "../config/mailer";
 class AuthController {
     
     static login = async (req:Request, res: Response)=>{
@@ -28,13 +28,15 @@ class AuthController {
         if(!user.checkPassword(password)){
             return res.status(452).json({message: "password incorrect"})
         }
-
         const token= jwt.sign({userId: user.id,username:user.username},config.jwtSecret,{expiresIn:'1h'})
         //enviamos al front el mensaje, token y rol desde la res user
         res.json({message:'ok',token,role:user.role, id:user.id})
     }
+
     static changePassword = async (req:Request, res:Response) =>{
         const {userId}= res.locals.jwtPayload;
+        console.log(res.locals.jwtPayload);
+        
         const {oldPassword, newPassword}= req.body;
         if(!(oldPassword && newPassword)){
             res.status(400).json({message:'oldPassword && new Pasword are require'})
@@ -85,7 +87,7 @@ class AuthController {
             //si encontramos un usuario creamos un nuevo token
             const token = jwt.sign({userId:user.id, username:user.username}, config.jwtSecretReset,{expiresIn: '20m'});
             //guarda el link con el token
-            verificacionLink= `http://localhost:3000/new-password/${token}`;
+            verificacionLink= `http://localhost:4200/new-password/${token}`;
             //guarda el token
             user.resetToken= token;
 
@@ -94,7 +96,7 @@ class AuthController {
             messaege= 'Username not found';
             return res.status(400).json(messaege)
         }
-        //todo send email
+        // todo send email
         try {
             await transporter.sendMail({
                 from: '"Fred Foo 👻" <foo@example.com>', // sender address
@@ -112,7 +114,7 @@ class AuthController {
           emailStatus= error;
           return res.status(400).json({messaege:'no se puedo enviar email'})  
         }
-        //
+        
         try {
             await userRepository.save(user);
         } catch (error) {
@@ -120,7 +122,7 @@ class AuthController {
             emailStatus= error
             return res.status(400).json({})
         }
-        res.json({messaege, info:emailStatus, test:verificacionLink})
+        res.json({messaege, statusEmail:emailStatus, test:verificacionLink,token:user.resetToken})
 
     };
 

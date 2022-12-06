@@ -33,7 +33,7 @@ export class User {
     @UpdateDateColumn()
     updateAt: Date;
 
-    @Column()
+    @Column({ nullable: true })
     @IsOptional()
     resetToken:string;
 
@@ -46,5 +46,7 @@ export class User {
     checkPassword(password: string): boolean {
         return bcrypt.compareSync(password, this.password)
     }
+
+    
     
 }

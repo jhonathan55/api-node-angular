@@ -21,13 +21,17 @@ export class ProductController {
         } else {
             res.status(404).json({ message: 'not result' });
         }
+
     }
     //ok
     static getById = async (req: Request, res: Response) => {
         const { id } = req.params;
         const productRepository = getRepository(Product);
         try {
-            const user = await productRepository.findOneOrFail(id, { relations: ['categories'] });
+            const user = await productRepository.createQueryBuilder("product")
+                .leftJoinAndSelect("product.categories", "categories")
+                .where("product.id = :id", { id })
+                .getOne();
             res.send(user);
         } catch (error) {
             res.status(404).json({ message: 'not result' });
@@ -73,7 +77,7 @@ export class ProductController {
     static edit = async (req: Request, res: Response) => {
         let product;
         const { id } = req.params;
-        const { name, description, categories } = req.body;
+        const { name, description,price, categories } = req.body;
         const productRepository = getRepository(Product);
         //traemos table category
         const categoryRepo = getRepository(Category);
@@ -83,6 +87,7 @@ export class ProductController {
             const categoryId = await categoryRepo.findByIds(categories);
             product.name = name;
             product.description = description;
+            product.price=price;
             //pasamos la busqueda para ser insertada in table produc & products by category
             product.categories = categoryId;
         } catch (error) {
